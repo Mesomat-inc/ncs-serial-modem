@@ -7,19 +7,19 @@
 / {
 	chosen {
 		ncs,sm-uart = &dtr_uart0;
-		nordic,pm-ext-flash = &gd25wb256;
+		/* nordic,pm-ext-flash = &gd25wb256; */
 	};
 };
 
 /* DTR with DK */
 &uart0 {
 	status = "okay";
-	hw-flow-control;
-
+	/* hw-flow-control; */
+	current-speed = <57600>;
 	dtr_uart0: dtr-uart {
 		compatible = "nordic,dtr-uart";
-		dtr-gpios = <&gpio0 8 (GPIO_PULL_UP | GPIO_ACTIVE_HIGH)>;
-		ri-gpios = <&gpio0 0 GPIO_ACTIVE_LOW>;
+		dtr-gpios = <&gpio0 10 (GPIO_PULL_DOWN | GPIO_ACTIVE_LOW)>;
+		ri-gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
 		status = "okay";
 	};
 };
@@ -27,7 +27,7 @@
 &gpio0 {
 	status = "okay";
 	/* Use PORT event for DTR (8) pin to save power */
-	sense-edge-mask = <0x00000100>;
+	sense-edge-mask = <0x00000110>;
 };
 
 /* Disable I2C2.
@@ -40,5 +40,13 @@
 
 /* Enable external flash */
 &gd25wb256 {
-	status = "okay";
+	status = "disabled";
+};
+
+&spi3 {
+	status = "disabled";
+};
+
+&pwm0 {
+	status = "disabled";
 };
